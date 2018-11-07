@@ -77,6 +77,26 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `111MIL`.`Sede`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `111MIL`.`Sede` ;
+
+CREATE TABLE IF NOT EXISTS `111MIL`.`Sede` (
+  `idSede` INT NOT NULL AUTO_INCREMENT,
+  `localidad` INT NOT NULL,
+  `lugar` VARCHAR(50) NOT NULL,
+  `borrado` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`idSede`),
+  INDEX `localidad_idx` (`localidad` ASC),
+  CONSTRAINT `localidad`
+    FOREIGN KEY (`localidad`)
+    REFERENCES `111MIL`.`Localidad` (`idLocalidad`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `111MIL`.`Alumno`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `111MIL`.`Alumno` ;
@@ -87,31 +107,18 @@ CREATE TABLE IF NOT EXISTS `111MIL`.`Alumno` (
   `fechaInscripcion` DATE NULL,
   `cohorte` INT NOT NULL,
   `borrado` TINYINT(1) NOT NULL DEFAULT 0,
+  `sede` INT NOT NULL,
   PRIMARY KEY (`idAlumno`),
   INDEX `personaAlumno_idx` (`persona` ASC),
+  INDEX `alumnoSede_idx` (`sede` ASC),
   CONSTRAINT `personaAlumno`
     FOREIGN KEY (`persona`)
     REFERENCES `111MIL`.`Persona` (`idPersona`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `111MIL`.`Sede`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `111MIL`.`Sede` ;
-
-CREATE TABLE IF NOT EXISTS `111MIL`.`Sede` (
-  `idSede` INT NOT NULL AUTO_INCREMENT,
-  `Localidad` INT NOT NULL,
-  `Lugar` VARCHAR(50) NOT NULL,
-  `borrado` TINYINT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`idSede`),
-  INDEX `localidad_idx` (`Localidad` ASC),
-  CONSTRAINT `localidad`
-    FOREIGN KEY (`Localidad`)
-    REFERENCES `111MIL`.`Localidad` (`idLocalidad`)
+    ON UPDATE NO ACTION,
+  CONSTRAINT `alumnoSede`
+    FOREIGN KEY (`sede`)
+    REFERENCES `111MIL`.`Sede` (`idSede`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
